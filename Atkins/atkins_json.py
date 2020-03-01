@@ -28,8 +28,9 @@ def encode_food(myFood):
 def saveFoodList():
     for i in range(len(foodList)):
         encode_food(foodList[i])
-        with open('foodList.json','w') as f:
+        with open('foodList.json','a') as f:
             f.write(json.dumps(foodList[i], default=encode_food)) 
+            f.write('\n')
 
 #Command Listener
 while True:
