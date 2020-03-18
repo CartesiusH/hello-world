@@ -1,12 +1,6 @@
-#Adding New Foods To List with Phase and Type of Meal Attributes
-foodList = []
-class food:
-    def __init__(self, name, phase, meal):
-        self.name = name
-        self.phase = phase
-        self.meal = meal
+#Add New Food To Data File
 def addFood():
-    print('Enter a new food:')
+    print('Enter name of new food:')
     newName = input()
     print('Enter phase:')
     newPhase = input()
@@ -14,52 +8,78 @@ def addFood():
     print('Enter type of meal:')
     newMeal = input()
 
-    newFood = food(newName,newPhase,newMeal)
-    foodList.append(newFood)
+    newFood = {
+        "name": newName,
+        "phase": newPhase,
+        "meal": newMeal,
+    }
+    return newFood
 
-#Store foodList with JSON
-import json
-def encode_food(myFood):
-    if isinstance(myFood, food):
-        return(myFood.name, myFood.phase, myFood.meal)
-    else:
-        raise TypeError (f'Object is not JSON serializable')
+def encodeFood(newFood):
+    import json    
+    with open('foodList.json','a+') as f:
+        json.dump(newFood, f, indent=2, separators=(',', ': '))
 
-def saveFoodList():
-    for i in range(len(foodList)):
-        encode_food(foodList[i])
-        with open('foodList.json','a') as f:
-            f.write(json.dumps(foodList[i], default=encode_food)) 
-            f.write('\n')
+
+#Tell What Food To Eat Based on Time of Day
+def getTime():
+    from datetime import datetime
+    from datetime import date
+
+    today = date.today()
+    today = today.strftime('%w') 
+    today = int(today) # Monday = 1, Sunday = 7
+
+    now = datetime.now()
+    now = now.strftime('%H')
+    now = int(now)
+
+    return today, now
+
+def getFood(today, now):
+    import json
+    with open('foodList.json','r') as f:
+        foods = json.load(f)
+    
+    for i in foods:
+        print(i)
+        print(foods[i])
+    
+    if foods['phase'] == 1:
+        print('Phase 1')
+
+
+    '''
+    if today <=5: #Weekday
+        if now <= 10:
+            print('It is the morning!')
+        elif now <= 16:
+            print('It is the afternoon!')
+        else:
+            print('It is nightime!')
+    else: #Weekend
+        if now <= 10:
+            print('It is the morning!')
+        elif now <= 16:
+            print('It is the afternoon!')
+        else:
+            print('It is nightime!')'''
+
 
 #Command Listener
 while True:
     c = input()
     if 'Add Food' in c: 
-        addFood()
-    if 'Commit Food' in c:
-        saveFoodList()
+        newFood = addFood()
+        encodeFood(newFood)
+    if 'What Now?' in c:
+        today, now = getTime()
+        getFood(today, now)
     if 'Stop' in c: 
         break
 
 
 '''
-#Getting Date (Week) & Time (Hours) as Integers
-from datetime import datetime
-from datetime import date
-
-today = date.today()
-today = today.strftime('%w')
-today = int(today)
-
-now = datetime.now()
-now = now.strftime('%H')
-now = int(now)
-
-#Command Listener
-
-
-
 The final product: enter a command add new food, what should I eat right now, or inspire me 
 and you get the right response
 also delete new food?
