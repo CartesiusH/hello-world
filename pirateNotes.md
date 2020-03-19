@@ -1,5 +1,5 @@
 # Project Plan
-### goal:
+## goal:
 given show name, episode number and season, download episode
 
 ## steps:
@@ -13,13 +13,17 @@ given show name, episode number and season, download episode
 3. download that epiosde 
     - using lr download thing?
 
-# Resources
+# Resourcess
 Selenium Docs
 https://selenium-python.readthedocs.io/locating-elements.html#locating-hyperlinks-by-link-text
 //*[@attribute = "attribute_value"]
 
+Errors with Beautiful Soup That Lead Me To Selenium
 https://stackoverflow.com/questions/51082130/getting-empty-src-while-scraping/51088253
 https://stackoverflow.com/questions/52521456/empty-src-attribute-returned-with-selenium-on-python
+
+RegEx Cheat Sheet
+http://regexlib.com/cheatsheet.aspx
 
 
 # Old Stuff
