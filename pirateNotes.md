@@ -29,3 +29,10 @@ from selenium.webdriver.common.by import By
 driver.get('https://ww3.fmovie.sc/free/you-season-1/watching.html/?episode=10565')
 elem = driver.find_element_by_id('iframe-embed')
 print(elem.get_attribute('src'))
+
+# Ideas for the Future
+- add specify episode option
+- add download option
+- add email/text link option
+
+- possible virus check?

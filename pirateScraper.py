@@ -1,6 +1,6 @@
 # Enter show's name and season number to get show's intro page
 print('Enter show\'s name:')
-name = input().lower()
+name = input().lower().replace(' ','-')
 print('Enter season number:')
 number = input()
 
@@ -15,7 +15,6 @@ driver.get(introPage)
 playButton = driver.find_element_by_xpath('//a[@class="thumb mvi-cover"]')
 episodePage = (playButton.get_attribute('href'))
 driver.get(episodePage)
-print(episodePage)
 
 # Get all episodes by data-server attribute, then print episode name and video URL
 #Try data-server 1
