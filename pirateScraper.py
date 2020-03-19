@@ -15,20 +15,24 @@ driver.get(introPage)
 playButton = driver.find_element_by_xpath('//a[@class="thumb mvi-cover"]')
 episodePage = (playButton.get_attribute('href'))
 driver.get(episodePage)
+print(episodePage)
 
-# Get all episodes by data-Ssrver attribute, then print episode name and video URL
+# Get all episodes by data-server attribute, then print episode name and video URL
+#Try data-server 1
 episodes = driver.find_elements_by_xpath('//a[@data-server="1"]')
 for item in episodes:
     name = item.get_attribute('innerHTML')
-    url = item.get_attribute('data-strvid') 
-    print('{:<50} {:<50}'.format(name, url))
+    url = item.get_attribute('data-strvid')
+    if url != None: 
+        print('{name:<80} {url:<80}'.format(name=name, url=url).rstrip())
+
+#If not, try data-server 2
+if episodes == []:
+    episodes = driver.find_elements_by_xpath('//a[@data-server="10"]')
+    for item in episodes:
+        name = item.get_attribute('innerHTML')
+        url = item.get_attribute('data-drive')
+        if url != None: 
+            print('{:<50} {:<50}'.format(name, url).rstrip())
 
 driver.close()
-
-'''
-Works For: You,
-
-data-server="1" --> data-strvid
-data-server="10" --> data-drive
-'''
-
