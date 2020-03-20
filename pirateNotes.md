@@ -25,6 +25,11 @@ https://stackoverflow.com/questions/52521456/empty-src-attribute-returned-with-s
 RegEx Cheat Sheet
 http://regexlib.com/cheatsheet.aspx
 
+Using Requests Library to Download Video
+https://www.codementor.io/@aviaryan/downloading-files-from-urls-in-python-77q3bs0un
+
+Cheater way? GetFLV (or see how it works)
+https://www.quora.com/Which-is-the-easiest-way-to-get-a-streaming-video-running-on-JW-player-on-the-browser
 
 # Old Stuff
 from selenium.webdriver.common.keys import Keys
@@ -40,3 +45,23 @@ print(elem.get_attribute('src'))
 - add email/text link option
 
 - possible virus check?
+
+# Downloading Stuff
+
+ohh, those are all relative
+so if I had a playlist of all the .ts links, I could put the file back together again
+wow
+all of the files in the 
+/tsfiles/
+compartment
+
+https://stackoverflow.com/questions/22188332/download-ts-files-from-video-stream
+https://www.google.com/search?client=safari&rls=en&q=set+request+headers+python&ie=UTF-8&oe=UTF-8
+
+# Plan of Attack
+1. extract video.m3u8 link 
+2. use RegEx to convert to 1080.m3u8 link 
+3. get 1080.m3u8 file 
+4. extract .ts links
+5. get .ts files and store in folder
+6. use converter to put string .ts files together OR use VLC to play them

@@ -1,4 +1,4 @@
-
+# GET VIDEO LINKS
 # Enter show's name and season number to get show's intro page
 print('Show Name:', end=' ')
 name = input().lower().replace(' ','-')
@@ -41,19 +41,42 @@ if episodes == []:
 
 driver.close()
 
-
-
-# Allow download option
+# DOWNLOAD OPTION
+# Allow user to choose which episodes to download
 import re
 print('Download Episodes?')
 numbers = re.findall('\d', input()) 
 
 spacer=''
 downloadList = []
+nameList = []
+
 for item in data: # For each episode, extract the episode number (using recorded data)
     epNum = re.findall('\d', item['name'])
     epNum = spacer.join(epNum)
     for number in numbers: # Check if episode number is one user mentioned
         if epNum == number:
             downloadList.append(item['url']) 
+            nameList.append(item['name'])
 
+print(downloadList)
+
+# Download seletced episodes
+
+'''
+import requests
+
+counter = 0
+for link in downloadList:
+    counter += 1
+    file = nameList[counter]
+
+    r = requests.get(link, stream = True)
+    with open(file,'wb') as f:
+        for chunk in r.iter_content(chunk_size = 1024*1024): 
+                if chunk: 
+                    f.write(chunk) 
+
+    print(file,' is downloaded!')
+    
+'''
