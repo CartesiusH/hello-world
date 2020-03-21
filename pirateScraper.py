@@ -41,8 +41,7 @@ if episodes == []:
 
 driver.close()
 
-# DOWNLOAD OPTION
-# Allow user to choose which episodes to download
+# SPECIFY WHICH LINKS TO DOWNLOAD
 import re
 print('Download Episodes?')
 numbers = re.findall('\d', input()) 
@@ -61,22 +60,5 @@ for item in data: # For each episode, extract the episode number (using recorded
 
 print(downloadList)
 
-# Download seletced episodes
 
-'''
-import requests
 
-counter = 0
-for link in downloadList:
-    counter += 1
-    file = nameList[counter]
-
-    r = requests.get(link, stream = True)
-    with open(file,'wb') as f:
-        for chunk in r.iter_content(chunk_size = 1024*1024): 
-                if chunk: 
-                    f.write(chunk) 
-
-    print(file,' is downloaded!')
-    
-'''

@@ -61,7 +61,10 @@ https://www.google.com/search?client=safari&rls=en&q=set+request+headers+python&
 # Plan of Attack
 1. extract video.m3u8 link 
 2. use RegEx to convert to 1080.m3u8 link 
-3. get 1080.m3u8 file 
-4. extract .ts links
-5. get .ts files and store in folder
+3. get 1080.m3u8 file (done)
+4. extract .ts links (done)
+5. get .ts files and store in folder 
 6. use converter to put string .ts files together OR use VLC to play them
+
+# Issues
+- [] why is different on Chrome?
