@@ -17,12 +17,7 @@ About TS Files
 https://stackoverflow.com/questions/22188332/download-ts-files-from-video-stream
 
 # To-Do's
-## Current Plan
-1. split download code into more pieces 
-2. test sending next link at break time
-
 ## Feature Ideas 
-- [x] add download option
 - [ ] add progress bar
 - [ ] add email/text link option
 - [ ] add virus checker
@@ -34,3 +29,13 @@ https://stackoverflow.com/questions/22188332/download-ts-files-from-video-stream
 - [ ] why is different on Chrome?
 
 
+## Logbook
+- [x] add download option
+- [x] split download code into more pieces 
+- [x] test sending next link at break time
+
+# Current Thoughts
+- not an in issue of sudden authentication failure b/c https requests works find after failutre
+- not an issue of opening the file interrupting data flow (series of writes)
+
+- has stopped on different files for different episodes. why does it choose to stop when?

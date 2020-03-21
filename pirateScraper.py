@@ -143,10 +143,9 @@ for episode in downloadList:
 
     for link in tslinks:
         counter += 1
-        downloadTsFile(link, path)
-
-'''
-for episode in downloadList:
-    downloadEpisode(episode, raw_name, season, numList[downloadList.index(episode)])
-
-'''
+        try:
+            downloadTsFile(link, path)
+        except RemoteDisconnected:
+            print('Remote disconnected, waiting 5 seconds and trying again.')
+            time.sleep(5)
+            downloadTsFile(link, path)
