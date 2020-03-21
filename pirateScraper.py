@@ -1,64 +1,139 @@
-# GET VIDEO LINKS
-# Enter show's name and season number to get show's intro page
-print('Show Name:', end=' ')
-name = input().lower().replace(' ','-')
-print('Season #:', end=' ')
-season = input()
+def getInput():
+    print('Show Name:', end=' ')
+    raw_name = input()
+    name = raw_name.lower().replace(' ','-')
+    print('Season #:', end=' ')
+    season = input()
 
-base = 'https://ww7.123moviesfree.sc/season/{name}-season-{season}/'
-introPage = base.format(name=name,season=season)
+    return raw_name, name, season
 
-# Get episode page url from intro page
-from selenium import webdriver
-driver = webdriver.Chrome()
-driver.get(introPage)
 
-playButton = driver.find_element_by_xpath('//a[@class="thumb mvi-cover"]')
-episodePage = (playButton.get_attribute('href'))
-driver.get(episodePage)
+def getEpisodePage(name, season):
+    # Get intro page 
+    base = 'https://ww7.123moviesfree.sc/season/{name}-season-{season}/'
+    introPage = base.format(name=name,season=season)
+    driver.get(introPage)
 
-data = []
+    # Get episode page
+    playButton = driver.find_element_by_xpath('//a[@class="thumb mvi-cover"]')
+    episodePage = (playButton.get_attribute('href'))
 
-# Get all episodes by data-server attribute, then print (and store) episode name and video URL
-#Try data-server 1
-episodes = driver.find_elements_by_xpath('//a[@data-server="1"]')
-for item in episodes:
-    name = item.get_attribute('innerHTML')
-    url = item.get_attribute('data-strvid')
-    if url != None: 
-        print('{name:<80} {url:<80}'.format(name=name, url=url).rstrip())
-        data.append({'name':name,'url':url})
+    return episodePage
 
-#If not, try data-server 2
-if episodes == []:
-    episodes = driver.find_elements_by_xpath('//a[@data-server="10"]')
+
+def getEpisodeLinks(episodePage):
+    # Get all episodes by data-server attribute, then print (and store) episode name and video URL
+    driver.get(episodePage)
+    episodeLinks = []
+
+    # Try data-server 1
+    episodes = driver.find_elements_by_xpath('//a[@data-server="1"]')
     for item in episodes:
         name = item.get_attribute('innerHTML')
-        url = item.get_attribute('data-drive')
+        url = item.get_attribute('data-strvid')
         if url != None: 
-            print('{:<50} {:<50}'.format(name, url).rstrip())
-            data.append({'name':name,'url':url})
+            episodeLinks.append({'name':name,'url':url})
 
+    # If not, try data-server 2
+    if episodes == []:
+        episodes = driver.find_elements_by_xpath('//a[@data-server="10"]')
+        for item in episodes:
+            name = item.get_attribute('innerHTML')
+            url = item.get_attribute('data-drive')
+            if url != None: 
+                episodeLinks.append({'name':name,'url':url})
+    
+    # Print episode links
+    for item in episodeLinks:
+        print('{name:<80} {url:<80}'.format(name=item['name'], url=item['url']).rstrip())
+
+    return episodeLinks
+
+def selectEpisodes(episodeLinks):
+    import re
+    print('Download Episodes?')
+    numbers = re.findall('\d', input()) 
+
+    spacer=''
+    downloadList = []
+    numList = []
+
+    for item in episodeLinks: # For each episode, extract the episode number (using recorded data)
+        epNum = re.findall('\d', item['name'])
+        epNum = spacer.join(epNum)
+        for number in numbers: # Check if episode number is one user mentioned
+            if epNum == number:
+                downloadList.append(item['url']) 
+                numList.append(number)
+
+    return downloadList, numList
+
+def downloadEpisode(episode, raw_name, season, episodeNumber):
+
+    # Get 1080.m3u8 link
+    driver = webdriver.Safari()
+    driver.get(episode)
+
+    video_m3u8 = driver.find_element_by_tag_name('video').get_attribute('src')
+    final_m3u8 = video_m3u8.replace('video.m3u8','1080.m3u8')
+
+    driver.close()
+
+    # Get m3u8 file
+    import requests
+    headers = {
+        'Accept':'*/*',
+        'Connection':'keep-alive',
+        'Host':'shockwave.streamvid.co',
+        'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
+        'Accept-Language':'en-us',
+        'Referer': episode,
+        'Accept-Encoding':'gzip'
+    }
+    playlist = requests.get(final_m3u8, headers=headers).content.decode('utf-8').split()
+
+    # Extract .ts links
+    tslinks = []
+    for line in playlist:
+        if not line.lstrip().startswith('#'):
+            tslinks.append('https://shockwave.streamvid.co'+line)
+
+    # Download .ts files
+    headers['Accept-Encoding'] = 'idenity'
+    import time
+
+    import os
+    directory = raw_name + ' s' + season + 'e' + episodeNumber
+    parent_dir = '/Users/mica/Movies/'
+    path = os.path.join(parent_dir, directory)
+    os.mkdir(path)
+
+    counter = 0
+    print(len(tslinks),' files to install.')
+
+    for link in tslinks:
+        time.sleep(1)
+        tsfile = requests.get(link, headers=headers)
+
+        counter +=1
+        file_name = str(counter)
+        filePath = path + '/' + file_name
+
+        with open(filePath,'wb') as f:
+            f.write(tsfile.content)
+
+
+# Get Episode Links of Choice
+raw_name, name, season = getInput()
+from selenium import webdriver
+
+driver = webdriver.Chrome()
+episodePage = getEpisodePage(name, season)
+episodeLinks = getEpisodeLinks(episodePage)
 driver.close()
 
-# SPECIFY WHICH LINKS TO DOWNLOAD
-import re
-print('Download Episodes?')
-numbers = re.findall('\d', input()) 
-
-spacer=''
-downloadList = []
-nameList = []
-
-for item in data: # For each episode, extract the episode number (using recorded data)
-    epNum = re.findall('\d', item['name'])
-    epNum = spacer.join(epNum)
-    for number in numbers: # Check if episode number is one user mentioned
-        if epNum == number:
-            downloadList.append(item['url']) 
-            nameList.append(item['name'])
-
-print(downloadList)
-
-
+# Download Episodes of Choice
+downloadList, numList = selectEpisodes(episodeLinks)
+for episode in downloadList:
+    downloadEpisode(episode, raw_name, season, numList[downloadList.index(episode)])
 
