@@ -1,2 +1,0 @@
-Amazon: secretAmazon: bbb.
-amazon.com: Ilc.

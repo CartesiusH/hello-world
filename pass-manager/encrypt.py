@@ -5,7 +5,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-with open('joyero.txt','rb') as f:
+with open('passBox.txt','rb') as f:
     header = f.readline()
     if b'Encrypted' in header:
         print('Already encrypted')
@@ -28,14 +28,14 @@ key = base64.urlsafe_b64encode(kdf.derive(password))
 
 
 #Encrypting the file
-f = open('joyero.txt','rb')
+f = open('passBox.txt','rb')
 data = f.read()
 f.close()
 
 fernet = Fernet(key) #Turn key into a fernet object for symmetric (ie. fernet) encryption
 token = fernet.encrypt(data)
 
-f2 = open('joyero.txt','wb')
+f2 = open('passBox.txt','wb')
 f2.write(b'Encrypted'+ b'\n')
 f2.write(token)
 f.close()

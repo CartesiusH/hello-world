@@ -1,4 +1,4 @@
-with open('joyero.txt','rb') as f:
+with open('passBox.txt','rb') as f:
     header = f.readline()
     if b'Encrypted' in header:
         import decrypt
@@ -29,7 +29,7 @@ for item2 in A:
     B += item2
 
 # Writes Company and Password in File
-f = open('joyero.txt','a')
+f = open('passBox.txt','a')
 f.write(company)
 f.write(': ')
 f.write(B + '\n') 

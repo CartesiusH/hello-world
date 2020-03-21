@@ -6,7 +6,7 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-with open('joyero.txt','rb') as f:
+with open('passBox.txt','rb') as f:
     header = f.readline()
     if not b'Encrypted' in header:
         print('Already decrypted')
@@ -28,7 +28,7 @@ kdf = PBKDF2HMAC(
 key = base64.urlsafe_b64encode(kdf.derive(password))
 
 #Decrypting the file
-f = open('joyero.txt','rb')
+f = open('passBox.txt','rb')
 next(f)
 data = f.read()
 f.close()
@@ -36,7 +36,7 @@ f.close()
 fernet = Fernet(key)
 try:
     message = fernet.decrypt(data)
-    f2 = open('joyero.txt','wb')
+    f2 = open('passBox.txt','wb')
     f2.write(message)
     f2.close()
 except cryptography.exceptions.InvalidSignature:
