@@ -68,8 +68,8 @@ def selectEpisodes(episodeLinks):
 
     return downloadList, numList
 
-def downloadEpisode(episode, raw_name, season, episodeNumber):
 
+def getFileLinks(episode):
     # Get 1080.m3u8 link
     driver = webdriver.Safari()
     driver.get(episode)
@@ -80,7 +80,7 @@ def downloadEpisode(episode, raw_name, season, episodeNumber):
     driver.close()
 
     # Get m3u8 file
-    import requests
+    global headers
     headers = {
         'Accept':'*/*',
         'Connection':'keep-alive',
@@ -97,30 +97,27 @@ def downloadEpisode(episode, raw_name, season, episodeNumber):
     for line in playlist:
         if not line.lstrip().startswith('#'):
             tslinks.append('https://shockwave.streamvid.co'+line)
+    
+    return tslinks
 
-    # Download .ts files
-    headers['Accept-Encoding'] = 'idenity'
-    import time
-
+def makeDirectory(raw_name, season, episodeNumber):
     import os
     directory = raw_name + ' s' + season + 'e' + episodeNumber
     parent_dir = '/Users/mica/Movies/'
     path = os.path.join(parent_dir, directory)
     os.mkdir(path)
 
-    counter = 0
-    print(len(tslinks),' files to install.')
+    return path
 
-    for link in tslinks:
-        time.sleep(1)
-        tsfile = requests.get(link, headers=headers)
+def downloadTsFile(link, path):  
+    time.sleep(1)
+    tsfile = requests.get(link, headers=headers)
 
-        counter +=1
-        file_name = str(counter)
-        filePath = path + '/' + file_name
+    file_name = str(counter)
+    filePath = path + '/' + file_name
 
-        with open(filePath,'wb') as f:
-            f.write(tsfile.content)
+    with open(filePath,'wb') as f:
+        f.write(tsfile.content)
 
 
 # Get Episode Links of Choice
@@ -135,5 +132,21 @@ driver.close()
 # Download Episodes of Choice
 downloadList, numList = selectEpisodes(episodeLinks)
 for episode in downloadList:
+    import requests
+    tslinks = getFileLinks(episode)
+    path = makeDirectory(raw_name, season, numList[downloadList.index(episode)])
+
+    import time
+    counter = 0
+    print(len(tslinks),' files to install.')
+    headers['Accept-Encoding'] = 'idenity'
+
+    for link in tslinks:
+        counter += 1
+        downloadTsFile(link, path)
+
+'''
+for episode in downloadList:
     downloadEpisode(episode, raw_name, season, numList[downloadList.index(episode)])
 
+'''
