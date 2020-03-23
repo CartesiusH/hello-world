@@ -17,6 +17,12 @@ About TS Files
 https://stackoverflow.com/questions/22188332/download-ts-files-from-video-stream
 
 # To-Do's
+## Current
+- [ ] run script with createJoinFile function to see if it works (in progress)
+- [ ] join files using bash, if it doesn't
+- [ ] run ffmpeg from bash to see if it works
+- [ ] automate ffmpeg commands with ffmpy or auto-trigger bash script?
+ 
 ## Feature Ideas 
 - [ ] add progress bar
 - [ ] add email/text link option
@@ -39,3 +45,4 @@ https://stackoverflow.com/questions/22188332/download-ts-files-from-video-stream
 - not an issue of opening the file interrupting data flow (series of writes)
 
 - has stopped on different files for different episodes. why does it choose to stop when?
+- ugh, I hate how it takes so long to test shit, I need to find someway to make the download process faster

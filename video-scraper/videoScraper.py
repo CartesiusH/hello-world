@@ -119,8 +119,32 @@ def downloadTsFile(link, path):
     with open(filePath,'wb') as f:
         f.write(tsfile.content)
 
+def createJoinFile(path, tslinks):
+    join_file = path.replace(' ','-') + '.txt' # same name as folder, but with extension and no spaces
+    with open(join_file,'w') as f:
+        for item in tslinks:
+            f.write(path + '/' + tslinks.index('item'))
+    
+    return join_file
+
+'''
+def convertToMP4(join_file):
+    from ffmpy import FFmpeg
+    Ffmpeg(
+        inputs={"'concat: file1"}
+    )
+
+ffmpy.FFmpeg(
+    inputs={"'concat:file1.ts|file2.ts'": None},
+    outputs={'output.ts': '-c copy -bsf:a aac_adtstoasc'}
+)
+
+
+# use  ffmpeg -f concat -safe 0 -i join.txt -c copy output.mp4
+'''
 
 # Get Episode Links of Choice
+'''
 raw_name, name, season = getInput()
 from selenium import webdriver
 
@@ -145,7 +169,12 @@ for episode in downloadList:
         counter += 1
         try:
             downloadTsFile(link, path)
-        except RemoteDisconnected:
+        except RemoteDisconnected: # This part not working apparently
             print('Remote disconnected, waiting 5 seconds and trying again.')
             time.sleep(5)
             downloadTsFile(link, path)
+
+'''
+
+    join_file = createJoinFile(path, tslinks)
+
