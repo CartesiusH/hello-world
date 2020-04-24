@@ -6,7 +6,7 @@
 
 ## Dinner Decider
 - Gives a list of things to eat based on a healthy-ness level and time of day/week (whether it's breakfast/lunch/dinner and weekday/weekend.) 
-- I made two versions of the script, one that stores the list of food options in a .pickle file and another that stores the list in a .json file just for the sake of expirementation.
+- I made two versions of the script, one that stores the list of food options in a .pickle file and another that stores the list in a .json file (just for the sake of expirementation.)
 
 
 
