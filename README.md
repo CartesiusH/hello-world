@@ -1,5 +1,4 @@
 # What Each Script Does
-
 ## Password Manager
 - This script does 2 things:
   - Given a sentence, take the first letter of each word to make a password that has a mix of numbers/letters/special characters. I do this to create my passwords because it creates a varied sequence of seemingly random characters (ie. not an English word with characther subsitutions that's prone to a dictionary attack) that is easier to remember than an actual random sequence.
@@ -10,7 +9,7 @@
 
 ## What To Eat
 - Gives a list of things to eat based on a healthy-ness level and time of day/week (whether it's breakfast/lunch/dinner and weekday/weekend.) 
-- I made two versions of the script, one that stores the list of food options in a .pickle file and another that stores the list in a .json file just for the sake of expirementation.
+- I made two versions of the script, one that stores the list of food options in a .pickle file and another that stores the list in a .json file (just for the sake of expirementation.)
 
 ## Hangman Game
 - The program choses one of several pre-set words at random and allows the user to guess up to 10 different letters.
